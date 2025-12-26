@@ -54,3 +54,46 @@
 
   .border-accent { border-color: var(--color-accent); }
 }
+
+html{
+  scroll-behavior: smooth;
+}
+
+/* Floating particles for lively background */
+.particle {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: var(--color-primary);
+  border-radius: 50%;
+  opacity: 0.4;
+  animation: float 15s infinite linear;
+}
+.particle-1 { top: 20%; left: 10%; animation-delay: 0s; }
+.particle-2 { top: 50%; left: 80%; animation-delay: 3s; }
+.particle-3 { top: 70%; left: 30%; animation-delay: 6s; }
+.particle-4 { top: 30%; left: 60%; animation-delay: 9s; }
+.particle-5 { top: 80%; left: 90%; animation-delay: 12s; }
+
+@keyframes float {
+  0% { transform: translateY(0) translateX(0); }
+  100% { transform: translateY(-100vh) translateX(100px); }
+}
+
+/* Success color */
+.text-success { color: #22c55e; }
+.bg-success { background-color: #22c55e; }
+
+/* Infinite Carousel */
+@keyframes carousel {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.testimonial-track {
+  animation: carousel 40s linear infinite;
+}
+
+.testimonial-track:hover {
+  animation-play-state: paused;
+}
