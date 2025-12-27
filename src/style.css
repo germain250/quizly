@@ -32,13 +32,6 @@
 @layer base {
   body {
     font-family: var(--font-sans);
-    background-color: var(--color-bg);
-    color: var(--color-text);
-  }
-
-  .dark body {
-    background-color: var(--color-bg-dark);
-    color: var(--color-text-dark);
   }
 }
 
@@ -74,6 +67,12 @@ html{
 .particle-3 { top: 70%; left: 30%; animation-delay: 6s; }
 .particle-4 { top: 30%; left: 60%; animation-delay: 9s; }
 .particle-5 { top: 80%; left: 90%; animation-delay: 12s; }
+.particle-6 { top: 12%; left: 30%; animation-delay: 0s; }
+.particle-7 { top: 24%; left: 78%; animation-delay: 3s; }
+.particle-8 { top: 53%; left: 43%; animation-delay: 6s; }
+.particle-9 { top: 76%; left: 40%; animation-delay: 9s; }
+.particle-10 { top: 90%; left: 9%; animation-delay: 12s; }
+
 
 @keyframes float {
   0% { transform: translateY(0) translateX(0); }

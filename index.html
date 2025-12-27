@@ -12,7 +12,7 @@
     referrerpolicy="no-referrer"
   />
 </head>
-<body class="relative bg-surface dark:bg-surface-dark">
+<body class="relative text-text dark:text-text-dark bg-surface dark:bg-surface-dark">
   <section class="relative min-h-screen flex flex-col">
     <nav id="navbar" class="w-full fixed top-0 z-50 transition-all duration-300 bg-transparent backdrop-blur-0">
       <div class="flex justify-between items-center px-8 md:px-14 py-6">
@@ -53,7 +53,7 @@
         </div>
       </div>
     </nav>
-    <div class="relative flex-1 flex items-center justify-center overflow-hidden px-6">
+    <div class="relative flex-1 flex items-center mt-24 justify-center overflow-hidden px-6">
       <div class="relative z-10 max-w-4xl text-center">
         <span class="inline-block mb-4 px-4 py-1.5 rounded-full bg-primary/10 dark:bg-primary/20 backdrop-blur text-sm font-medium text-primary">Learn faster. Retain more.</span>
         <h2 class="text-4xl md:text-6xl font-extrabold leading-tight mb-6 min-h-20">
@@ -106,6 +106,16 @@
           <div class="particle particle-3"></div>
           <div class="particle particle-4"></div>
           <div class="particle particle-5"></div>
+          <div class="particle particle-6"></div>
+          <div class="particle particle-7"></div>
+          <div class="particle particle-8"></div>
+          <div class="particle particle-9"></div>
+          <div class="particle particle-10"></div>
+          <div class="particle particle-11"></div>
+          <div class="particle particle-12"></div>
+          <div class="particle particle-13"></div>
+          <div class="particle particle-14"></div>
+          <div class="particle particle-15"></div>
         </div>
 
         <div class="grid md:grid-cols-3 gap-8 relative z-10">
@@ -293,7 +303,7 @@
   </section>
 
   <!-- Testimonials Section with Infinite Carousel -->
-  <section id="testimonials" class="py-20 px-8 md:px-14 relative overflow-hidden bg-gradient-to-b from-surface/50 to-surface dark:from-surface-dark/50 dark:to-surface-dark">
+  <section id="testimonials" class="py-20 px-8 md:px-14 relative overflow-hidden bg-linear-to-b from-surface/50 to-surface dark:from-surface-dark/50 dark:to-surface-dark">
     <div class="max-w-6xl mx-auto text-center">
       <h2 class="text-4xl md:text-5xl font-extrabold mb-4">
         Loved by Learners & <span class="text-primary">Institutions</span>
@@ -304,7 +314,7 @@
       <div class="relative">
         <div class="testimonial-track flex gap-8 animate-carousel">
           <!-- Duplicate set for seamless loop -->
-          <div class="testimonial-slide min-w-[360px]">
+          <div class="testimonial-slide min-w-90">
             <div class="bg-surface dark:bg-surface-dark/60 backdrop-blur rounded-3xl p-8 shadow-2xl border border-primary/20 h-full flex flex-col">
               <div class="flex mb-4">
                 <i class="fas fa-star text-primary"></i>
@@ -324,7 +334,7 @@
             </div>
           </div>
 
-          <div class="testimonial-slide min-w-[360px]">
+          <div class="testimonial-slide min-w-90">
             <div class="bg-surface dark:bg-surface-dark/60 backdrop-blur rounded-3xl p-8 shadow-2xl border border-primary/20 h-full flex flex-col">
               <div class="flex mb-4">
                 <i class="fas fa-star text-primary"></i>
@@ -344,7 +354,7 @@
             </div>
           </div>
 
-          <div class="testimonial-slide min-w-[360px]">
+          <div class="testimonial-slide min-w-90 max-w-6xl">
             <div class="bg-surface dark:bg-surface-dark/60 backdrop-blur rounded-3xl p-8 shadow-2xl border border-primary/20 h-full flex flex-col">
               <div class="flex mb-4">
                 <i class="fas fa-star text-primary"></i>
@@ -364,7 +374,7 @@
             </div>
           </div>
 
-          <div class="testimonial-slide min-w-[360px]">
+          <div class="testimonial-slide min-w-90">
             <div class="bg-surface dark:bg-surface-dark/60 backdrop-blur rounded-3xl p-8 shadow-2xl border border-primary/20 h-full flex flex-col">
               <div class="flex mb-4">
                 <i class="fas fa-star text-primary"></i>
@@ -384,7 +394,7 @@
             </div>
           </div>
 
-          <div class="testimonial-slide min-w-[360px]">
+          <div class="testimonial-slide min-w-90">
             <div class="bg-surface dark:bg-surface-dark/60 backdrop-blur rounded-3xl p-8 shadow-2xl border border-primary/20 h-full flex flex-col">
               <div class="flex mb-4">
                 <i class="fas fa-star text-primary"></i>
@@ -405,7 +415,7 @@
           </div>
 
           <!-- Duplicate slides for infinite loop -->
-          <div class="testimonial-slide min-w-[360px]">
+          <div class="testimonial-slide min-w-90">
             <div class="bg-surface dark:bg-surface-dark/60 backdrop-blur rounded-3xl p-8 shadow-2xl border border-primary/20 h-full flex flex-col">
               <div class="flex mb-4">
                 <i class="fas fa-star text-primary"></i>
@@ -502,7 +512,7 @@
 
   <footer class="bg-surface dark:bg-surface-dark border-t border-primary/20 py-12 px-8 md:px-14">
     <!-- Existing footer unchanged -->
-    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-10">
+    <div class="mx-auto grid grid-cols-1 md:grid-cols-4 gap-10">
       <div class="md:col-span-1">
         <h3 class="text-2xl font-extrabold tracking-tight text-primary mb-4">Quizly</h3>
         <p class=" text-sm leading-relaxed">
@@ -538,7 +548,7 @@
         <p class=" text-sm mb-4">
           Subscribe for new quiz updates and learning tips.
         </p>
-        <form class="flex flex-col sm:flex-row gap-3">
+        <form class="space-y-2">
           <input type="email" placeholder="Your email" class="px-4 py-3 rounded-lg bg-surface/50 dark:bg-surface-dark/50 border border-primary/20 focus:outline-none focus:border-primary" />
           <button type="submit" class="px-6 py-3 rounded-lg bg-primary text-surface font-semibold hover:bg-primary/90 transition">Subscribe</button>
         </form>
@@ -554,10 +564,10 @@
     const navbar = document.getElementById("navbar");
     window.addEventListener("scroll", () => {
       if (window.scrollY > 10) {
-        navbar.classList.add("bg-surface/70", "dark:bg-surface-dark/70", "backdrop-blur-3xl", "border-b", "border-primary/20", "shadow-lg");
+        navbar.classList.add("bg-surface", "dark:bg-surface-dark", "backdrop-blur-3xl", "border-b", "border-primary/20", "shadow-lg");
         navbar.classList.remove("bg-transparent", "backdrop-blur-0");
       } else {
-        navbar.classList.remove("bg-surface/70", "dark:bg-surface-dark/70", "backdrop-blur-xl", "border-b", "border-primary/20", "shadow-lg");
+        navbar.classList.remove("bg-surface", "dark:bg-surface-dark", "backdrop-blur-3xl", "border-b", "border-primary/20", "shadow-lg");
         navbar.classList.add("bg-transparent", "backdrop-blur-0");
       }
     });
