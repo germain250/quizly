@@ -39,9 +39,9 @@
             <i class="fas fa-sun hidden dark:inline"></i>
             <i class="fas fa-moon dark:hidden"></i>
           </button>
-                  <div class="cta flex space-x-3">
-          <a href="./pages/login.html"><button class="px-4 py-2 rounded-md hover:bg-primary hover:cursor-pointer border-primary border-2 ">Get Started</button></a>
-        </div>
+          <div class="cta flex space-x-3">
+            <a href="./pages/login.html"><button class="px-4 py-2 rounded-md hover:bg-primary hover:cursor-pointer border-primary border-2 ">Get Started</button></a>
+          </div>
           <button
             aria-label="Open menu"
             class="md:hidden inline-flex items-center justify-center
@@ -53,6 +53,7 @@
           >
             <i class="fas fa-bars text-primary"></i>
           </button>
+        </div>
       </div>
     </nav>
     <div class="relative flex-1 flex items-center mt-24 justify-center overflow-hidden px-6">
@@ -215,6 +216,76 @@
             </div>
           </div>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quiz Preview Section -->
+  <section id="quizzes" class="py-24 px-8 md:px-14 bg-linear-to-b from-surface to-surface/60 dark:from-surface-dark dark:to-surface-dark/60">
+    <div class="max-w-7xl mx-auto">
+      <h2 class="text-4xl md:text-5xl font-extrabold text-center mb-16">
+        Experience a <span class="text-primary">Real Quiz</span>
+      </h2>
+
+      <div class="grid md:grid-cols-2 gap-14 items-center">
+        
+        <!-- LEFT: Quiz Image / Visual -->
+        <div class="relative group">
+          <div class="absolute -inset-2 rounded-3xl bg-primary/20 blur-2xl opacity-60 group-hover:opacity-100 transition"></div>
+          <div class="relative overflow-hidden rounded-3xl shadow-2xl border border-primary/20">
+            <!-- Placeholder image -->
+            <img
+              src="quiz.jpeg"
+              alt="Quiz Preview"
+              class="w-full h-full object-cover group-hover:scale-105 transition duration-700"
+            />
+
+            <!-- Floating badge -->
+            <div class="absolute top-5 left-5 bg-surface/80 dark:bg-surface-dark/80 backdrop-blur px-4 py-2 rounded-full text-sm font-semibold shadow">
+              Live Quiz Preview
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: Interactive Question Preview -->
+        <div class="space-y-8">
+          <div class="flex items-center justify-between">
+            <p class="text-sm font-semibold tracking-wide uppercase text-primary">
+              Question Preview
+            </p>
+            <span class="text-xs px-3 py-1 rounded-full bg-primary/10 text-primary font-medium">
+              MCQ • Medium
+            </span>
+          </div>
+
+          <h3 id="preview-question" class="text-2xl md:text-3xl font-bold leading-snug min-h-20">
+            Which planet is known as the Red Planet?
+          </h3>
+
+          <div id="preview-options" class="grid gap-4">
+            <!-- Option -->
+            <div class="quiz-option">Mars</div>
+            <div class="quiz-option">Venus</div>
+            <div class="quiz-option">Jupiter</div>
+            <div class="quiz-option">Mercury</div>
+          </div>
+
+          <!-- Feedback -->
+          <div id="preview-feedback" class="h-6 text-sm font-semibold"></div>
+
+          <!-- CTA -->
+          <div class="pt-6 flex items-center gap-4">
+            <a href="./pages/quiz.html">
+              <button class="px-8 py-4 rounded-xl bg-primary text-surface font-bold hover:bg-primary/90 transition shadow-xl shadow-primary/30">
+                Start Quiz
+              </button>
+            </a>
+            <p class="text-sm opacity-70">
+              No signup required
+            </p>
+          </div>
+        </div>
+
       </div>
     </div>
   </section>
@@ -436,8 +507,6 @@
               </div>
             </div>
           </div>
-
-          <!-- Add more duplicates as needed -->
         </div>
       </div>
 
@@ -456,7 +525,6 @@
   </section>
 
   <section id="faqs" class="py-20 px-8 md:px-14 bg-surface dark:bg-surface-dark">
-    <!-- Existing FAQs section unchanged -->
     <div class="max-w-4xl mx-auto">
       <h2 class="text-4xl md:text-5xl font-extrabold text-center mb-12">
         Frequently Asked <span class="text-primary">Questions</span>
@@ -471,7 +539,6 @@
             Quizly is an interactive learning platform that helps you master knowledge through short, focused quizzes in various categories including general knowledge, finance, psychometric tests, and Rwanda traffic laws (amategeko y’umuhanda).
           </div>
         </details>
-        <!-- Other FAQ items remain the same -->
         <details class="group bg-surface dark:bg-surface-dark rounded-xl shadow-lg overflow-hidden border border-primary/10">
           <summary class="flex justify-between items-center px-6 py-5 cursor-pointer list-none font-semibold text-lg">
             <span>Is Quizly free to use?</span>
@@ -513,7 +580,6 @@
   </section>
 
   <footer class="bg-surface dark:bg-surface-dark border-t border-primary/20 py-12 px-8 md:px-14">
-    <!-- Existing footer unchanged -->
     <div class="mx-auto grid grid-cols-1 md:grid-cols-4 gap-10">
       <div class="md:col-span-1">
         <h3 class="text-2xl font-extrabold tracking-tight text-primary mb-4">Quizly</h3>
@@ -561,83 +627,6 @@
     </div>
   </footer>
 
-  <script>
-    // Existing navbar scroll effect
-    const navbar = document.getElementById("navbar");
-    window.addEventListener("scroll", () => {
-      if (window.scrollY > 10) {
-        navbar.classList.add("bg-surface", "dark:bg-surface-dark", "backdrop-blur-3xl", "border-b", "border-primary/20", "shadow-lg");
-        navbar.classList.remove("bg-transparent", "backdrop-blur-0");
-      } else {
-        navbar.classList.remove("bg-surface", "dark:bg-surface-dark", "backdrop-blur-3xl", "border-b", "border-primary/20", "shadow-lg");
-        navbar.classList.add("bg-transparent", "backdrop-blur-0");
-      }
-    });
-
-    // Typewriter effect
-    const words = ["Smart Quizzes","True / False Questions","Multiple Choice Learning","Finance & Psychometric Tests","Amategeko y’umuhanda"];
-    let wordIndex = 0, charIndex = 0, isDeleting = false;
-    const typeTarget = document.getElementById("typewriter");
-    function typeEffect(){
-      const current = words[wordIndex];
-      if(!isDeleting){
-        typeTarget.textContent = current.slice(0,charIndex++);
-        if(charIndex > current.length){
-          isDeleting = true;
-          setTimeout(typeEffect, 1200);
-          return;
-        }
-      } else {
-        typeTarget.textContent = current.slice(0,charIndex--);
-        if(charIndex < 0){
-          isDeleting = false;
-          wordIndex = (wordIndex + 1) % words.length;
-          charIndex = 0;
-        }
-      }
-      setTimeout(typeEffect, isDeleting ? 80 : 200);
-    }
-    typeEffect();
-
-    // Theme toggle
-    const themeToggle = document.getElementById("themeToggle");
-    function setTheme(mode){
-      if(mode === "dark") document.documentElement.classList.add("dark");
-      else document.documentElement.classList.remove("dark");
-      localStorage.setItem("theme",mode);
-      // Update icon
-      document.querySelector('#themeToggle i.fa-sun').classList.toggle('hidden', mode !== 'dark');
-      document.querySelector('#themeToggle i.fa-moon').classList.toggle('hidden', mode === 'dark');
-    }
-    const savedTheme = localStorage.getItem("theme") || (window.matchMedia('(prefers-color-scheme: dark)').matches ? "dark" : "light");
-    setTheme(savedTheme);
-    themeToggle.addEventListener("click", ()=>{
-      const current = document.documentElement.classList.contains("dark") ? "dark" : "light";
-      setTheme(current === "dark" ? "light" : "dark");
-    });
-
-    // Interactive quiz cards "correct answer" feedback
-    document.querySelectorAll('.quiz-card').forEach(card => {
-      card.addEventListener('click', () => {
-        card.classList.add('ring-4', 'ring-primary/50');
-        setTimeout(() => card.classList.remove('ring-4', 'ring-primary/50'), 1500);
-      });
-    });
-
-    // Counter animation
-    const counter = document.getElementById('counter');
-    let count = 0;
-    const target = 1247; // Feel free to change
-    const increment = Math.ceil(target / 100);
-    const timer = setInterval(() => {
-      count += increment;
-      if (count >= target) {
-        count = target;
-        clearInterval(timer);
-      }
-      counter.textContent = count.toLocaleString();
-    }, 30);
-
-  </script>
+  <script src="./src/script/index.js"></script>
 </body>
 </html>

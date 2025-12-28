@@ -3,87 +3,124 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-<link rel="stylesheet" href="../src/style.css">
-<link rel="stylesheet" href="../src/login.css">
+    <title>Login – Quizly</title>
+
+    <link rel="stylesheet" href="../src/style.css">
+    <link rel="stylesheet" href="../src/login.css">
 </head>
 <body>
-    <!-- make a login form -->
+
      <div class="container">
         <div class="curved-shape"></div>
         <div class="curved-shape2"></div>
+
+        <!-- LOGIN FORM -->
         <div class="form-box Login">
-            <h2 class="animation" style="--D:0">Login</h2>
+            <h2 class="animation" style="--D:1">Login</h2>
+
             <form action="#">
-                <div class="input-box animation"style="--D:1">
-                    <input type="text"required>
+                <div class="input-box animation" style="--D:2">
+                    <input type="text" required>
                     <label for="username">Username</label>
                     <i class="bx bxs-user"></i>
                 </div>
-                <div class="input-box animation"style="--D:2">
-                    <input type="text"required>
+
+                <div class="input-box animation" style="--D:3">
+                    <input type="text" required>
                     <label for="password">Password</label>
                     <i class="bx bxs-lock-alt"></i>
                 </div>
-                <div class="input-box animation" style="--D:3">
-                <button class="btn" type="submit">Login</button>
+
+                <div class="input-box animation" style="--D:4">
+                    <button class="btn" type="submit">Login</button>
                 </div>
-                <div class="regi-link animation" style="--D:4">
-                    <p>Don't have an account ? <a href="#" class="SignUpLink">SignUp</a></p>
+
+                <div class="regi-link animation" style="--D:5">
+                    <p>
+                      Don’t have an account?
+                      <a href="#" class="SignUpLink">Sign Up</a>
+                    </p>
                 </div>
             </form>
         </div>
+
+        <!-- LOGIN INFO -->
         <div class="info-content Login">
+                        <h1 class="animation text-3xl font-extrabold tracking-tight text-primary drop-shadow-lg mb-2"
+                style="--li:16; --S:0">
+              Quizly
+            </h1>
             <h2 class="animation" style="--D:0">WELCOME BACK</h2>
-            <p class="animation" style="--D:1">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Praesentium, fugiat!</p>
+            <p class="animation" style="--D:1">
+              Continue your learning journey with Quizly. Pick up where you left
+              off, sharpen your knowledge, and master topics.
+            </p>
         </div>
-         <div class="form-box Register">
-            <h2 class="animation" style="--li:17; --S:0">Register</h2>
+
+        <!-- REGISTER FORM -->
+        <div class="form-box Register">
+            <h2 class="animation" style="--li:17; --S:1">Register</h2>
+
             <form action="#">
-                <div class="input-box animation"style="--li:18; --S:1">
-                    <input type="text"required>
+                <div class="input-box animation" style="--li:18; --S:2">
+                    <input type="text" required>
                     <label for="username">Username</label>
                     <i class="bx bxs-user"></i>
                 </div>
-                <div class="input-box animation"style="--li:18; --S:1">
-                    <input type="text"required>
+
+                <div class="input-box animation" style="--li:19; --S:3">
+                    <input type="text" required>
                     <label for="email">Email</label>
                     <i class="bx bxs-email"></i>
                 </div>
-                <div class="input-box animation"style="--li:19; --S:2">
-                    <input type="password"required>
+
+                <div class="input-box animation" style="--li:20; --S:4">
+                    <input type="password" required>
                     <label for="password">Password</label>
                     <i class="bx bxs-lock-alt"></i>
                 </div>
-                <div class="input-box animation" style="--li:20; --S:3">
-                <button class="btn" type="submit">Register</button>
+
+                <div class="input-box animation" style="--li:21; --S:5">
+                    <button class="btn" type="submit">Register</button>
                 </div>
-                <div class="regi-link animation" style="--li:21; --S:4">
-                    <p>Already have an account ? <a href="#" class="SignInLink">Sign In</a></p>
+
+                <div class="regi-link animation" style="--li:22; --S:6">
+                    <p>
+                      Already have an account?
+                      <a href="#" class="SignInLink">Sign In</a>
+                    </p>
                 </div>
             </form>
         </div>
+
+        <!-- REGISTER INFO -->
         <div class="info-content Register">
-            <h2 class="animation" style="--li:17; --S:0">WELCOME BACK</h2>
-            <p class="animation" style="--li:18; --S:1">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Praesentium, fugiat!</p>
+            <h1 class="animation text-3xl font-extrabold tracking-tight text-primary drop-shadow-lg mb-2"
+            style="--li:16; --S:0">
+            Quizly
+            </h1>
+            <h2 class="animation" style="--li:17; --S:0">JOIN QUIZLY</h2>
+            <p class="animation" style="--li:18; --S:1">
+              Learn faster. Retain more. Quizly helps you master knowledge using
+              short, interactive quizzes — perfect for exam prep, daily
+              learning, and real mastery.
+            </p>
         </div>
      </div>
 
      <script>
       const container = document.querySelector(".container");
-const LoginLink = document.querySelector('.SignInLink');
-const RegisterLink = document.querySelector('.SignUpLink');
+      const LoginLink = document.querySelector('.SignInLink');
+      const RegisterLink = document.querySelector('.SignUpLink');
 
-RegisterLink.addEventListener("click", () => {
-    container.classList.add("active");
-});
+      RegisterLink.addEventListener("click", () => {
+          container.classList.add("active");
+      });
 
-LoginLink.addEventListener("click", () => {
-    container.classList.remove("active");
-});
-
-
-
+      LoginLink.addEventListener("click", () => {
+          container.classList.remove("active");
+      });
      </script>
+
 </body>
 </html>

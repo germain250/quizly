@@ -3,7 +3,7 @@
   padding: 0;
   box-sizing: border-box;
   color: #fff;
-  font-family: var(--font-sans); /* Use Theme Font */
+  font-family: var(--font-sans);
   color: var(--color-text-dark);
 }
 body{
@@ -240,7 +240,7 @@ top: 0;
 }
 .info-content h2{
   text-transform: uppercase;
-  font-size: 36px;
+  font-size: 32px;
   line-height: 1.3;
 }
 .info-content p{
@@ -253,7 +253,7 @@ top: -5px;
 height: 600px;
 width: 850px;
 background: linear-gradient(45deg,var(--color-primary),black);
-transform: rotate(10deg) skewY(40deg);
+transform: rotate(0deg) skewY(-40deg);
 transform-origin: bottom right;
 transition: 1.5s ease;
 }
