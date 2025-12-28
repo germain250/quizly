@@ -48,7 +48,6 @@
   .border-accent { border-color: var(--color-accent); }
 }
 
-<<<<<<< HEAD
 html{
   scroll-behavior: smooth;
 }
@@ -97,5 +96,3 @@ html{
 .testimonial-track:hover {
   animation-play-state: paused;
 }
-=======
->>>>>>> c6ed6da46fea133111b8e23e3959b6edfc9b6812
