@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quiz – Quizly</title>
+
+  <link rel="stylesheet" href="../src/style.css" />
+<script type="module" src="../src/script/quiz-page.js"></script>
+
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-bg-dark text-text-dark min-h-screen overflow-hidden">
+
+  <!-- PAGE WRAPPER -->
+  <div class="max-w-5xl mx-auto px-4 py-6 h-screen flex flex-col">
+
+    <!-- HEADER -->
+    <header class="flex items-center justify-between mb-6">
+
+      <!-- Logo -->
+      <div class="flex items-center gap-4">
+        <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-bg-dark text-2xl font-bold shadow-lg shadow-primary/40">
+          Q
+        </div>
+        <h1 class="text-3xl font-extrabold tracking-tight text-primary drop-shadow-lg">
+          Quizly
+        </h1>
+      </div>
+
+      <!-- Profile -->
+      <div class="relative">
+        <button id="profileBtn"
+          class="w-12 h-12 rounded-full ring ring-primary ring-offset-4 ring-offset-bg-dark overflow-hidden">
+          <img src="https://i.pravatar.cc/150?img=68" class="w-full h-full object-cover" />
+        </button>
+
+        <!-- Profile Dropdown -->
+        <div id="profileMenu"
+          class="absolute z-50 right-0 mt-4 w-48 bg-surface-dark border border-primary/20 rounded-2xl shadow-xl hidden">
+          <ul class="py-2 text-sm">
+            <li>
+              <a href="./dashboard.html" class="block px-4 py-2 hover:bg-primary/20">
+                Dashboard
+              </a>
+            </li>
+            <li>
+              <button id="openSettings"
+                class="w-full text-left px-4 py-2 hover:bg-primary/20">
+                Quiz Settings
+              </button>
+            </li>
+            <li class="border-t border-primary/20 my-2"></li>
+            <li>
+              <button class="w-full text-left px-4 py-2 text-red-400 hover:bg-red-500/20">
+                Logout
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </header>
+
+    <!-- MAIN -->
+    <main class="flex-1 flex flex-col gap-6">
+
+      <!-- STATUS ROW -->
+      <div class="flex justify-center gap-6">
+
+        <div class="flex items-center gap-3 bg-surface-dark/40 px-6 py-3 rounded-2xl border border-primary/20">
+          <i class="bx bx-time text-2xl text-primary"></i>
+          <span class="opacity-80">Time:</span>
+          <strong class="text-primary text-lg" id="timeRemaining">--:--</strong>
+        </div>
+
+        <div class="flex items-center gap-3 bg-surface-dark/40 px-6 py-3 rounded-2xl border border-primary/20">
+          <i class="bx bx-bulb text-2xl text-primary"></i>
+          <span class="opacity-80">Hints:</span>
+          <strong class="text-primary text-lg" id="hintsLeft">0</strong>
+        </div>
+      </div>
+
+      <!-- QUIZ CARD -->
+      <section
+        class="bg-surface-dark/60 backdrop-blur-lg border border-primary/20 rounded-3xl p-6 shadow-2xl flex flex-col flex-1">
+
+        <!-- QUIZ META -->
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <h2 class="text-2xl font-bold" id="quizTitle">Quiz</h2>
+            <p class="text-sm opacity-80">
+              Category: <span class="text-primary font-semibold" id="quizCategory">—</span>
+            </p>
+          </div>
+
+          <div
+            class="px-4 py-2 rounded-xl bg-primary/20 text-primary border border-primary/40 text-sm font-medium">
+            Question <span id="currentIndex">0</span> / <span id="totalQuestions">0</span>
+          </div>
+        </div>
+
+        <!-- PROGRESS -->
+        <div class="mb-6">
+          <progress
+            class="progress progress-primary w-full h-3"
+            value="0"
+            max="100"
+            id="progressBar">
+          </progress>
+        </div>
+
+        <!-- QUESTION -->
+        <div class="flex-1 flex flex-col">
+          <h3 class="text-xl font-semibold mb-6 leading-relaxed" id="questionText">
+            Waiting for quiz configuration…
+          </h3>
+
+          <!-- OPTIONS -->
+          <div id="optionsContainer"
+            class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- JS will inject options here -->
+          </div>
+        </div>
+
+        <!-- ACTIONS -->
+        <div class="flex justify-between items-center mt-6">
+          <button
+            id="prevBtn"
+            class="btn btn-outline border-primary/50 text-primary px-6 py-2">
+            Previous
+          </button>
+
+          <div class="flex gap-4">
+            <button
+              id="skipBtn"
+              class="btn btn-ghost text-primary px-6 py-2">
+              Skip
+            </button>
+
+            <button
+              id="nextBtn"
+              class="btn bg-primary text-bg-dark px-8 py-2 font-semibold shadow-lg shadow-primary/30">
+              Next
+            </button>
+          </div>
+        </div>
+
+      </section>
+    </main>
+  </div>
+
+  <!-- SETTINGS MODAL -->
+  <div id="quizSettingsModal"
+    class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50">
+
+    <div class="bg-surface-dark rounded-3xl w-full max-w-lg p-8 border border-primary/30 shadow-2xl">
+      <h2 class="text-2xl font-bold mb-6 text-primary">
+        Quiz Setup
+      </h2>
+
+      <form id="quizSettingsForm" class="space-y-6">
+
+        <div>
+          <label class="block mb-2 text-sm opacity-80">Category</label>
+          <select required
+            class="w-full px-4 py-3 rounded-xl bg-bg-dark border border-primary/30 focus:outline-none">
+            <option value="">Select category</option>
+            <option value="general-knowledge">General Knowledge</option>
+            <option value="space-science">Space Science</option>
+            <option value="finance">Finance</option>
+            <option value="psychometric">Psychometric</option>
+            <option value="amategeko-yumuhanda">Amategeko y’umuhanda</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block mb-2 text-sm opacity-80">Number of Questions</label>
+          <input type="number" min="5" max="50" value="10"
+            class="w-full px-4 py-3 rounded-xl bg-bg-dark border border-primary/30 focus:outline-none">
+        </div>
+
+        <button
+          type="submit"
+          class="w-full py-4 rounded-xl bg-primary text-bg-dark font-semibold text-lg hover:bg-primary/90">
+          Start Quiz
+        </button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

@@ -278,3 +278,9 @@ transition: 1.5s ease;
   transform: rotate(-11deg) skewY(-41deg);
 transition-delay: 1.2s ;
 }
+.form-error {
+  margin-top: 8px;
+  font-size: 13px;
+  color: #ff6b6b;
+  min-height: 16px;
+}
