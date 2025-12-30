@@ -138,6 +138,7 @@ function endQuiz(timeUp = false){
     quizSession.timeUp = timeUp;
 
     quizSession.result = scoreQuiz(quizSession);
+    sessionStorage.setItem("quizSession",JSON.stringify(quizSession));
 
     window.location.href = "./quiz_result.html";
 }
