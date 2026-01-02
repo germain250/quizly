@@ -2,9 +2,9 @@ import { createQuizSession } from "./quiz/quiz-session";
 import { isAuthenticated, requireAuth } from "./core/auth_guard";
 import { getUsers, saveUsers } from "./core/storage";
 
-
 let quizSession = null;
 let user = null;
+let socket = null; // will be initialized only in team mode
 
 const correctSound = new Audio("../sounds/success.mp3");
 const wrongSound = new Audio("../sounds/wrong.mp3");
@@ -19,6 +19,7 @@ function playWrong() {
     wrongSound.play();
 }
 
+// Profile handling
 const profileBtn = document.getElementById("profileBtn");
 const profileMenu = document.getElementById("profileMenu");
 const authButtons = document.getElementById("authButtons");
@@ -31,9 +32,7 @@ if (isAuthenticated()) {
     profileBtn.classList.add("hidden");
 }
 
-profileBtn.addEventListener("click", () =>
-    profileMenu.classList.toggle("hidden")
-);
+profileBtn.addEventListener("click", () => profileMenu.classList.toggle("hidden"));
 
 document.addEventListener("click", e => {
     if (!profileBtn.contains(e.target) && !profileMenu.contains(e.target)) {
@@ -41,6 +40,9 @@ document.addEventListener("click", e => {
     }
 });
 
+// =============================================
+// Solo Mode Logic (unchanged + protected)
+// =============================================
 
 document.addEventListener("DOMContentLoaded", () => {
     const retry = sessionStorage.getItem("quizRetry");
@@ -71,6 +73,8 @@ function handleRetry(retry) {
     document.getElementById("totalQuestions").textContent = retry.questions.length;
 
     document.getElementById("quizSettingsModal").classList.add("hidden");
+    document.getElementById("quizSection").classList.remove("hidden");
+    document.getElementById("statusRow").classList.remove("hidden");
 
     startTimer();
     renderQuestion();
@@ -87,31 +91,63 @@ async function loadQuestions(category, count) {
         .sort(() => Math.random() - 0.5)
         .slice(0, count);
 }
+
+// =============================================
+// Form Submit - The only place where we branch
+// =============================================
+
 document.getElementById("quizSettingsForm").addEventListener("submit", async e => {
     e.preventDefault();
 
-    const form = e.target;
-    const category = form.querySelector("select").value;
-    const count = Number(form.querySelector('input[type="number"]').value);
-    const liveFeedbackEnabled = form.querySelector("#liveFeedbackToggle").checked;
+    const teamMode = document.getElementById("teamModeToggle").checked;
 
-    if (!category || !count) {
-        alert("Invalid quiz configuration");
+    if (teamMode) {
+        // ── MULTIPLAYER MODE ──
+        document.getElementById("quizSettingsModal").classList.add("hidden");
+        document.getElementById("multiplayerWaiting").classList.remove("hidden");
+
+        // Small delay for visual feedback, then redirect
+        setTimeout(() => {
+            window.location.href = "./lobby.html?action=create";
+        }, 1200);
+
         return;
     }
 
-    const questions = await loadQuestions(category, count);
+    // ── SOLO / INDIVIDUAL MODE ── (your original logic)
+    const category = document.getElementById("categorySelect").value;
+    const count = Number(document.getElementById("questionCount").value);
+    const liveFeedbackEnabled = document.getElementById("liveFeedbackToggle").checked;
 
-    quizSession = createQuizSession({ category, questions });
-    quizSession.liveFeedbackEnabled = liveFeedbackEnabled;
+    if (!category || !count || count < 1) {
+        alert("Please select a category and number of questions");
+        return;
+    }
 
-    document.getElementById("quizCategory").textContent = category;
-    document.getElementById("totalQuestions").textContent = questions.length;
-    document.getElementById("quizSettingsModal").classList.add("hidden");
+    try {
+        const questions = await loadQuestions(category, count);
 
-    startTimer();
-    renderQuestion();
+        quizSession = createQuizSession({ category, questions });
+        quizSession.liveFeedbackEnabled = liveFeedbackEnabled;
+
+        document.getElementById("quizCategory").textContent = category;
+        document.getElementById("totalQuestions").textContent = questions.length;
+
+        document.getElementById("quizSettingsModal").classList.add("hidden");
+        document.getElementById("quizSection").classList.remove("hidden");
+        document.getElementById("statusRow").classList.remove("hidden");
+
+        startTimer();
+        renderQuestion();
+    } catch (err) {
+        alert("Failed to load questions: " + err.message);
+    }
 });
+
+// =============================================
+// The rest is your original solo game logic
+// (unchanged)
+// =============================================
 
 function renderQuestion() {
     if (!quizSession) return;
@@ -119,7 +155,6 @@ function renderQuestion() {
     const q = quizSession.questions[quizSession.currentIndex];
     const entry = quizSession.answers[q.id];
 
-    // Only shuffle once per question
     if (!q.shuffledOptions) {
         q.shuffledOptions = [...q.options];
         for (let i = q.shuffledOptions.length - 1; i > 0; i--) {
@@ -132,8 +167,7 @@ function renderQuestion() {
 
     document.getElementById("currentIndex").textContent = quizSession.currentIndex + 1;
     document.getElementById("questionText").textContent = q.question;
-    document.getElementById("difficulty").textContent=`(${q.difficulty})`;
-
+    document.getElementById("difficulty").textContent = `(${q.difficulty})`;
 
     const container = document.getElementById("optionsContainer");
     container.innerHTML = "";
@@ -159,14 +193,14 @@ function renderQuestion() {
 
         if (entry && quizSession.liveFeedbackEnabled) {
             if (option === entry.value) {
-                if(entry.isCorrect){
+                if (entry.isCorrect) {
                     wrapper.classList.add("border-green-500", "bg-green-500/10", "animate-pulse");
                 } else {
                     wrapper.classList.add("border-red-500", "bg-red-500/10", "animate-shake");
                 }
             }
             if (!entry.isCorrect && option === q.answer) {
-                wrapper.classList.add("border-green-500","bg-green-500/5");
+                wrapper.classList.add("border-green-500", "bg-green-500/5");
             }
         }
 
@@ -192,11 +226,9 @@ function renderQuestion() {
 }
 
 function updateProgress() {
-    const percent =
-        ((quizSession.currentIndex + 1) / quizSession.questions.length) * 100;
+    const percent = ((quizSession.currentIndex + 1) / quizSession.questions.length) * 100;
     document.getElementById("progressBar").value = percent;
 }
-
 
 document.getElementById("nextBtn").addEventListener("click", () => {
     if (quizSession.currentIndex < quizSession.questions.length - 1) {
@@ -257,9 +289,7 @@ function finishQuiz(timeUp = false) {
 }
 
 function scoreQuiz(session) {
-    let correct = 0,
-        incorrect = 0,
-        skipped = 0;
+    let correct = 0, incorrect = 0, skipped = 0;
 
     session.questions.forEach(q => {
         const e = session.answers[q.id];

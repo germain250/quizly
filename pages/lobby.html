@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lobby – Quizly</title>
+
+  <link rel="stylesheet" href="../src/style.css" />
+  <script src="http://localhost:3000/socket.io/socket.io.js"></script>
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-bg-dark text-text-dark min-h-screen">
+
+  <div class="max-w-5xl mx-auto px-4 py-6 md:py-12 flex flex-col h-screen">
+
+    <header class="flex items-center justify-between mb-8">
+      <a href="../index.html">
+        <div class="flex items-center gap-4">
+          <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-surface text-2xl font-bold shadow-lg shadow-primary/30">
+            Q
+          </div>
+          <h1 class="text-3xl font-extrabold tracking-tight text-primary drop-shadow-lg">
+            Quizly
+          </h1>
+        </div>
+      </a>
+      <button id="backBtn" class="btn btn-ghost text-primary hover:bg-primary/20 px-4 py-2">
+        <i class="bx bx-arrow-back text-xl"></i> Back
+      </button>
+    </header>
+
+    <!-- Join form (shown when no valid params) -->
+    <div id="joinFormContainer" class="hidden flex-1 flex items-center justify-center">
+      <div class="w-full max-w-md bg-surface-dark/60 backdrop-blur-lg border border-primary/20 rounded-3xl p-8 shadow-2xl text-center">
+        <h2 class="text-3xl font-bold mb-6 text-primary">Join a Room</h2>
+        <p class="text-lg opacity-80 mb-8">Enter the code shared by your friend</p>
+
+        <form id="joinForm" class="space-y-6">
+          <input type="text" id="joinCode" placeholder="ROOM CODE" required
+                 class="w-full px-6 py-4 text-2xl text-center uppercase tracking-widest bg-bg-dark border border-primary/30 rounded-2xl focus:outline-none focus:border-primary">
+          <input type="text" id="joinUsername" placeholder="Your Name" required
+                 class="w-full px-6 py-4 bg-bg-dark border border-primary/30 rounded-2xl focus:outline-none focus:border-primary">
+          <button type="submit" class="w-full py-4 bg-primary text-bg-dark font-bold text-xl rounded-2xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/30">
+            Join Room
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Lobby content -->
+    <main id="lobbyContent" class="hidden flex-1 flex flex-col lg:flex-row gap-6">
+
+      <!-- Left column -->
+      <div class="flex-1 flex flex-col gap-6">
+
+        <!-- Room code card -->
+        <div class="bg-surface-dark/60 backdrop-blur-lg border border-primary/20 rounded-3xl p-6 text-center shadow-xl">
+          <p class="text-sm opacity-80 mb-2">Share this code to invite others</p>
+          <div class="flex items-center justify-center gap-3">
+            <h2 id="roomCodeDisplay" class="text-5xl md:text-6xl font-bold text-primary tracking-widest">——</h2>
+            <button id="copyCodeBtn" class="btn btn-ghost text-primary hover:bg-primary/20 p-2">
+              <i class='bx bx-copy text-2xl'></i>
+            </button>
+          </div>
+          <div id="joinTimerContainer" class="mt-4 text-lg opacity-90">
+            Join window closes in <span id="joinTimer" class="text-primary font-bold">2:00</span>
+          </div>
+        </div>
+
+        <!-- Player list -->
+        <div class="bg-surface-dark/60 backdrop-blur-lg border border-primary/20 rounded-3xl p-6 shadow-xl flex-1">
+          <h3 class="text-xl font-bold mb-4 flex items-center gap-2">
+            <i class='bx bx-group text-primary'></i>
+            Players (<span id="playerCount">0</span>)
+          </h3>
+          <ul id="playerList" class="space-y-3 overflow-y-auto max-h-[50vh]"></ul>
+        </div>
+
+        <!-- Host controls -->
+        <div id="hostControls" class="hidden bg-surface-dark/60 backdrop-blur-lg border border-primary/20 rounded-3xl p-6 shadow-xl">
+          <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <button id="startGameBtn" class="btn bg-primary text-bg-dark hover:bg-primary/90 px-8 py-3 text-lg font-semibold shadow-lg shadow-primary/30 flex items-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+              <i class='bx bx-play-circle text-2xl'></i> Start Game
+            </button>
+            <button id="lockRoomBtn" class="btn btn-outline border-primary/50 text-primary hover:bg-primary/20 px-8 py-3 text-lg">
+              <i class='bx bx-lock-alt text-xl'></i> Lock Room
+            </button>
+          </div>
+        </div>
+
+        <!-- Ready toggle (non-host) -->
+        <div id="readyToggleContainer" class="hidden bg-surface-dark/60 backdrop-blur-lg border border-primary/20 rounded-3xl p-6 shadow-xl text-center">
+          <label class="flex items-center justify-center gap-4 cursor-pointer">
+            <input type="checkbox" id="readyToggle" class="checkbox checkbox-primary checkbox-lg" />
+            <span class="text-xl font-medium">I'm Ready!</span>
+          </label>
+          <p class="mt-3 text-sm opacity-80">Waiting for others to get ready...</p>
+        </div>
+
+      </div>
+
+      <!-- Chat panel -->
+      <aside class="w-full lg:w-80 flex flex-col bg-surface-dark/70 backdrop-blur-lg border border-primary/20 rounded-3xl overflow-hidden shadow-2xl">
+        <div class="p-4 border-b border-primary/20 flex items-center justify-between">
+          <h3 class="text-lg font-semibold">Room Chat</h3>
+          <span class="flex items-center gap-1 text-success text-xs">
+            <i class='bx bxs-circle'></i> Live
+          </span>
+        </div>
+        <div id="chatMessages" class="flex-1 p-4 overflow-y-auto space-y-3"></div>
+        <div class="p-3 border-t border-primary/20">
+          <div class="flex">
+            <input id="chatInput" type="text" placeholder="Type a message..." class="flex-1 px-4 py-2 bg-bg-dark rounded-l-xl border border-primary/30 focus:outline-none text-sm">
+            <button id="sendChatBtn" class="btn bg-primary px-5 rounded-r-xl text-sm">Send</button>
+          </div>
+        </div>
+      </aside>
+
+    </main>
+  </div>
+
+  <script type="module">
+    const socket = io('http://localhost:3000');
+    let isHost = false;
+    let myUsername = '';
+    let currentRoomCode = '';
+
+    // ────────────────────────────────────────────────
+    // Page initialization
+    // ────────────────────────────────────────────────
+    window.addEventListener('load', () => {
+      const params = new URLSearchParams(window.location.search);
+      const action = params.get('action');
+      const code = params.get('code');
+      const usernameFromUrl = params.get('username');
+
+      if (action === 'create') {
+        // Host flow
+        myUsername = usernameFromUrl || prompt('Your username:') || 'Host';
+        socket.emit('createRoom', { username: myUsername });
+        isHost = true;
+        document.getElementById('lobbyContent').classList.remove('hidden');
+      } 
+      else if (action === 'join' && code) {
+        // Join flow
+        myUsername = usernameFromUrl || prompt('Your username:') || 'Player';
+        currentRoomCode = code;
+        socket.emit('joinRoom', { code, username: myUsername });
+        document.getElementById('lobbyContent').classList.remove('hidden');
+      } 
+      else {
+        // Show join form
+        document.getElementById('joinFormContainer').classList.remove('hidden');
+      }
+    });
+
+    // Join form handler
+    document.getElementById('joinForm')?.addEventListener('submit', e => {
+      e.preventDefault();
+      const code = document.getElementById('joinCode').value.trim().toUpperCase();
+      const username = document.getElementById('joinUsername').value.trim();
+
+      if (code.length < 4) {
+        alert("Room code must be at least 4 characters");
+        return;
+      }
+      if (!username) {
+        alert("Please enter your name");
+        return;
+      }
+
+      window.location.href = `lobby.html?action=join&code=${code}&username=${encodeURIComponent(username)}`;
+    });
+
+    // Back button
+    document.getElementById('backBtn').onclick = () => {
+      window.location.href = 'quiz.html';
+    };
+
+    // ────────────────────────────────────────────────
+    // Socket events
+    // ────────────────────────────────────────────────
+
+    socket.on('roomCreated', ({ code }) => {
+      currentRoomCode = code;
+      document.getElementById('roomCodeDisplay').textContent = code;
+      if (isHost) {
+        document.getElementById('hostControls').classList.remove('hidden');
+        document.getElementById('joinTimerContainer').style.display = 'block';
+        startJoinTimer();
+      }
+    });
+
+    socket.on('playerList', (players) => {
+      const container = document.getElementById('playerList');
+      const countEl = document.getElementById('playerCount');
+      container.innerHTML = '';
+      countEl.textContent = players.length;
+
+      players.forEach(p => {
+        const li = document.createElement('li');
+        li.className = 'flex items-center justify-between p-3 bg-bg-dark/40 rounded-2xl border border-primary/20 animate-fade-in';
+        li.innerHTML = `
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-primary/20 rounded-full flex items-center justify-center text-primary font-bold">
+              ${p.username.charAt(0).toUpperCase()}
+            </div>
+            <div>
+              <p class="font-medium">${p.username}${p.id === socket.id ? ' (You)' : ''}</p>
+              <p class="text-xs opacity-70">${p.ready ? 'Ready' : 'Waiting'}</p>
+            </div>
+          </div>
+          ${p.ready ? '<i class="bx bx-check-circle text-success text-2xl"></i>' : ''}
+        `;
+        container.appendChild(li);
+      });
+
+      // Enable/disable start button based on ready status
+      if (isHost) {
+        const allReady = players.every(p => p.ready);
+        const startBtn = document.getElementById('startGameBtn');
+        startBtn.disabled = !allReady || players.length < 2;
+        startBtn.title = allReady ? '' : 'Waiting for all players to be ready';
+      }
+
+      // Show ready toggle for non-hosts
+      if (!isHost && players.some(p => p.id === socket.id)) {
+        document.getElementById('readyToggleContainer').classList.remove('hidden');
+      }
+    });
+
+    socket.on('chatMessage', (msg) => {
+      const div = document.createElement('div');
+      div.className = msg.system 
+        ? 'text-center text-primary/70 italic text-sm animate-fade-in' 
+        : 'animate-slide-in';
+      div.innerHTML = msg.system ? msg.text : `<strong>${msg.username}:</strong> ${msg.text}`;
+      document.getElementById('chatMessages').appendChild(div);
+      div.scrollIntoView({ behavior: 'smooth' });
+    });
+
+    socket.on('error', (msg) => {
+      alert(msg);
+      window.location.href = 'quiz.html';
+    });
+
+    socket.on('gameStarted', () => {
+      window.location.href = `game_area.html?code=${currentRoomCode}`;
+    });
+
+    // ────────────────────────────────────────────────
+    // UI interactions
+    // ────────────────────────────────────────────────
+
+    // Copy room code
+    document.getElementById('copyCodeBtn').onclick = () => {
+      navigator.clipboard.writeText(currentRoomCode);
+      const btn = document.getElementById('copyCodeBtn');
+      btn.innerHTML = '<i class="bx bx-check text-success text-2xl"></i>';
+      setTimeout(() => btn.innerHTML = '<i class="bx bx-copy text-2xl"></i>', 1800);
+    };
+
+    // Ready toggle
+    document.getElementById('readyToggle').onchange = (e) => {
+      socket.emit('readyStatus', { roomCode: currentRoomCode, ready: e.target.checked });
+    };
+
+    // Start game (host)
+    document.getElementById('startGameBtn').onclick = () => {
+      socket.emit('startGame', { roomCode: currentRoomCode });
+    };
+
+    // Chat send
+    const chatInput = document.getElementById('chatInput');
+    const sendBtn = document.getElementById('sendChatBtn');
+
+    sendBtn.onclick = sendMessage;
+    chatInput.addEventListener('keypress', e => {
+      if (e.key === 'Enter') sendMessage();
+    });
+
+    function sendMessage() {
+      const text = chatInput.value.trim();
+      if (!text) return;
+      socket.emit('chatMessage', { roomCode: currentRoomCode, text });
+      chatInput.value = '';
+    }
+
+    function startJoinTimer() {
+      let timeLeft = 120;
+      const timerEl = document.getElementById('joinTimer');
+
+      const interval = setInterval(() => {
+        timeLeft--;
+        const min = String(Math.floor(timeLeft / 60)).padStart(2, '0');
+        const sec = String(timeLeft % 60).padStart(2, '0');
+        timerEl.textContent = `${min}:${sec}`;
+
+        if (timeLeft <= 0) {
+          clearInterval(interval);
+          timerEl.textContent = 'Closed';
+          document.getElementById('joinTimerContainer').classList.add('opacity-50');
+        }
+      }, 1000);
+    }
+  </script>
+
+  <style>
+    @keyframes fade-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes slide-in { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
+    .animate-fade-in { animation: fade-in 0.4s ease-out; }
+    .animate-slide-in { animation: slide-in 0.3s ease-out; }
+  </style>
+</body>
+</html>
