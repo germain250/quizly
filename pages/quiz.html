@@ -11,30 +11,34 @@
   <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
 </head>
 
-<body class="bg-bg-dark text-text-dark min-h-screen overflow-hidden">
+<body class="bg-bg-dark text-text-dark min-h-screen">
 
   <!-- PAGE WRAPPER -->
-  <div class="max-w-5xl mx-auto px-4 py-6 h-screen flex flex-col">
+  <div class="max-w-6xl mx-auto px-4 py-6 h-screen flex flex-col">
 
     <!-- HEADER -->
     <header class="flex items-center justify-between mb-6">
 
-      <!-- Logo -->
-      <div class="flex items-center gap-4">
-        <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-bg-dark text-2xl font-bold shadow-lg shadow-primary/40">
-          Q
+      <a href="../index.html">
+        <div class="flex items-center gap-4">
+          <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-surface text-2xl font-bold shadow-lg shadow-primary/30">
+            Q
+          </div>
+          <h1 class="text-3xl font-extrabold tracking-tight text-primary drop-shadow-lg">
+            Quizly
+          </h1>
         </div>
-        <h1 class="text-3xl font-extrabold tracking-tight text-primary drop-shadow-lg">
-          Quizly
-        </h1>
-      </div>
+      </a>
 
       <!-- Profile -->
       <div class="relative">
         <button id="profileBtn"
           class="w-12 h-12 rounded-full ring ring-primary ring-offset-4 ring-offset-bg-dark overflow-hidden">
-          <img src="https://i.pravatar.cc/150?img=68" class="w-full h-full object-cover" />
         </button>
+
+        <div id="authButtons" class="flex space-x-2">
+            <button onclick="{ window.location.href = './login.html' }" class="btn bg-primary text-bg-dark hover:bg-primary/90 border-primary px-10 py-4 text-lg font-semibold shadow-lg shadow-primary/30 flex items-center gap-3">Login</button>
+        </div>
 
         <!-- Profile Dropdown -->
         <div id="profileMenu"
@@ -48,7 +52,7 @@
             <li>
               <button id="openSettings"
                 class="w-full text-left px-4 py-2 hover:bg-primary/20">
-                Quiz Settings
+                Learning
               </button>
             </li>
             <li class="border-t border-primary/20 my-2"></li>
@@ -97,6 +101,7 @@
           <div
             class="px-4 py-2 rounded-xl bg-primary/20 text-primary border border-primary/40 text-sm font-medium">
             Question <span id="currentIndex">0</span> / <span id="totalQuestions">0</span>
+            <span id="difficulty">Hard</span>
           </div>
         </div>
 
@@ -178,6 +183,16 @@
           <label class="block mb-2 text-sm opacity-80">Number of Questions</label>
           <input type="number" min="5" max="50" value="10"
             class="w-full px-4 py-3 rounded-xl bg-bg-dark border border-primary/30 focus:outline-none">
+        </div>
+
+        <div class="flex items-start gap-3 pt-2">
+          <input type="checkbox" id="liveFeedbackToggle" class="checkbox checkbox-primary checkbox-lg mt-1" />
+          <label for="liveFeedbackToggle" class="cursor-pointer">
+            <div class="text-lg font-medium">Live feedback</div>
+            <div class="text-sm opacity-70">Show correct/incorrect answer immediately after selection</div>
+          </label>
+
+          
         </div>
 
         <button

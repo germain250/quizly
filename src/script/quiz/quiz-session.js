@@ -14,11 +14,6 @@ export function createQuizSession({ category,questions }){
         currentIndex: 0,
         answers: {},
         skipped: new Set(),
-        stats: {
-            correct: 0,
-            wrong: 0,
-            skipped: 0
-        }
     };
 }
 

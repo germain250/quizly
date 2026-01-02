@@ -21,7 +21,12 @@ export async function register({username,email,password}){
         },
         preferences: {
             sound: true,
-            theme: "dark"
+            theme: "dark",
+            settings: {
+                category: "amategeko-yumuhanda",
+                count: 20,
+                isLive: false
+            }
         },
         stats: {
             totalQuizzes: 0,
@@ -31,15 +36,15 @@ export async function register({username,email,password}){
         history: []
     };
 
-    await saveUsers(users);
-    await setCurrentUserId(userId);
+    saveUsers(users);
+    setCurrentUserId(userId);
 }
 
 export async function login({ username,password }){
     const users = await getUsers();
     for (const id in users){
         if(users[id].profile.username == username && users[id].profile.password === password){
-            await setCurrentUserId(id)
+            setCurrentUserId(id)
             return
         }
     }

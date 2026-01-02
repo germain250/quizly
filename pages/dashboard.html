@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" class="dark transition-colors duration-500">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard – Quizly</title>
+  <link rel="stylesheet" href="../src/style.css" />
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+  <script type="module" src="../src/script/dashboard-page.js" defer></script>
+</head>
+<body class="relative bg-surface dark:bg-surface-dark text-text dark:text-text-dark min-h-screen">
+
+  <div class="max-w-6xl mx-auto px-4 py-6 md:py-12">
+
+    <header class="flex items-center justify-between mb-8 md:mb-12">
+      <a href="../index.html">
+        <div class="flex items-center gap-4">
+          <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-surface text-2xl font-bold shadow-lg shadow-primary/30">
+            Q
+          </div>
+          <h1 class="text-3xl font-extrabold tracking-tight text-primary drop-shadow-lg">
+            Quizly
+          </h1>
+        </div>
+      </a>
+      <div class="relative">
+        <button id="profileBtn"
+          class="w-12 h-12 rounded-full ring ring-primary ring-offset-4 ring-offset-surface dark:ring-offset-surface-dark overflow-hidden bg-primary/20 text-primary font-bold text-xl flex items-center justify-center">
+          G
+        </button>
+
+        <div id="profileMenu"
+          class="absolute z-50 right-0 mt-4 w-48 bg-surface dark:bg-surface-dark border border-primary/20 rounded-2xl shadow-xl hidden">
+          <ul class="py-2 text-sm">
+            <li><a href="#" class="block px-4 py-2 hover:bg-primary/10 dark:hover:bg-primary/20">Profile</a></li>
+            <li><a href="#" class="block px-4 py-2 hover:bg-primary/10 dark:hover:bg-primary/20">Settings</a></li>
+            <li class="border-t border-primary/20 my-2"></li>
+            <li><button class="w-full text-left px-4 py-2 text-red-500 hover:bg-red-500/10 dark:hover:bg-red-500/20">Logout</button></li>
+          </ul>
+        </div>
+      </div>
+    </header>
+    <main class="space-y-12">
+      <section class="text-center md:text-left">
+        <h2 class="text-4xl md:text-5xl font-extrabold mb-4">
+          Welcome back, <span id="profileName" class="text-primary"></span>
+        </h2>
+        <p class="text-lg opacity-80 max-w-2xl mx-auto md:mx-0">
+          Here's your learning progress at a glance. Keep quizzing to master more!
+        </p>
+      </section>
+      <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="bg-surface dark:bg-surface-dark/60 backdrop-blur rounded-2xl p-6 border border-primary/20 shadow-md flex flex-col items-center text-center">
+          <i class='bx bx-brain text-4xl text-primary mb-4'></i>
+          <p id="totalNum" class="text-3xl font-bold text-primary">0</p>
+          <p class="mt-2 opacity-80">Total Quizzes</p>
+        </div>
+        <div class="bg-surface dark:bg-surface-dark/60 backdrop-blur rounded-2xl p-6 border border-primary/20 shadow-md flex flex-col items-center text-center">
+          <i class='bx bx-check-circle text-4xl text-success mb-4'></i>
+          <p id="correctNum" class="text-3xl font-bold text-success">0</p>
+          <p class="mt-2 opacity-80">Correct Answers</p>
+        </div>
+        <div class="bg-surface dark:bg-surface-dark/60 backdrop-blur rounded-2xl p-6 border border-primary/20 shadow-md flex flex-col items-center text-center">
+          <i class='bx bx-list-ul text-4xl text-primary mb-4'></i>
+          <p id="totalQuestions" class="text-3xl font-bold text-primary">0</p>
+          <p class="mt-2 opacity-80">Total Questions</p>
+        </div>
+        <div class="bg-surface dark:bg-surface-dark/60 backdrop-blur rounded-2xl p-6 border border-primary/20 shadow-md flex flex-col items-center text-center">
+          <i class='bx bx-trophy text-4xl text-warning mb-4'></i>
+          <p id="averageScore" class="text-3xl font-bold text-warning">-</p>
+          <p class="mt-2 opacity-80">Average Score</p>
+        </div>
+      </section>
+<section class="bg-surface dark:bg-surface-dark/60 backdrop-blur-lg border border-primary/20 rounded-3xl p-6 md:p-8 shadow-xl">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+    <h3 class="text-2xl md:text-3xl font-bold">Quiz History</h3>
+    <button onclick="{ window.location.href = './quiz.html' }" class="btn bg-primary text-surface hover:bg-primary/90 px-6 py-2 text-sm font-semibold shadow-md shadow-primary/20 flex items-center gap-2">
+      <i class="bx bx-plus text-lg"></i>
+      Start New Quiz
+    </button>
+  </div>
+  <div class="hidden md:block overflow-x-auto">
+    <table class="table w-full border-collapse">
+      <thead>
+        <tr class="border-b border-primary/20 text-sm uppercase tracking-wide opacity-80">
+          <th class="text-left py-3 px-4">ID</th>
+          <th class="text-left py-3 px-4">Category</th>
+          <th class="text-left py-3 px-4">Date</th>
+          <th class="text-left py-3 px-4">Score</th>
+          <th class="text-left py-3 px-4">Time Taken</th>
+          <th class="text-left py-3 px-4">Actions</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody">
+      </tbody>
+    </table>
+  </div>
+  <div id="mobileHistoryContainer" class="md:hidden space-y-4">
+  </div>
+  <div class="flex justify-center mt-8">
+    <div id="paginationControls" class="btn-group">
+    </div>
+  </div>
+
+</section>
+
+<section class="bg-surface dark:bg-surface-dark/60 backdrop-blur-lg border border-primary/20 rounded-3xl p-6 md:p-8 shadow-xl">
+  <h3 class="text-2xl md:text-3xl font-bold mb-6">Preferences</h3>
+  
+  <div class="space-y-8">
+    <div class="flex items-center justify-between">
+      <div>
+        <p class="font-semibold text-lg">Theme</p>
+        <p class="text-sm opacity-80 mt-1">Current: <span id="currentThemeDisplay" class="font-medium">Dark</span></p>
+      </div>
+      
+      <button id="themeToggleBtn"
+        class="btn bg-primary text-surface hover:bg-primary/90 px-6 py-3 font-medium flex items-center gap-3 shadow-md shadow-primary/20">
+        <i class="bx bx-moon text-xl" id="themeIcon"></i>
+        <span>Switch to Light</span>
+      </button>
+    </div>
+
+    <div class="flex items-center justify-between">
+      <div>
+        <p class="font-semibold text-lg">Sound Effects</p>
+        <p class="text-sm opacity-80 mt-1">Play sounds during quiz interactions</p>
+      </div>
+      
+      <label class="relative inline-flex items-center cursor-pointer">
+        <input type="checkbox" id="soundToggle" class="sr-only peer">
+        <div class="w-14 h-7 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/30 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-7 peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-1 after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all dark:border-gray-600 peer-checked:bg-primary"></div>
+      </label>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>

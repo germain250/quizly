@@ -114,3 +114,23 @@ html{
 .quiz-option.wrong {
   @apply bg-error/20 border-error text-error;
 }
+
+
+#scoreRing {
+  background: conic-gradient(
+    var(--color) 0% calc(var(--progress) * 1%),
+    transparent calc(var(--progress) * 1%) 100%
+  );
+  -webkit-mask: radial-gradient(farthest-side, transparent 82%, black 84%);
+  mask: radial-gradient(farthest-side, transparent 82%, black 84%);
+}
+
+.animate-pulse-once {
+  animation: pulse-once 2.2s ease-out forwards;
+}
+
+@keyframes pulse-once {
+  0%   { transform: scale(0.92); opacity: 0.4; }
+  50%  { transform: scale(1.08); opacity: 1; }
+  100% { transform: scale(1);    opacity: 1; }
+}

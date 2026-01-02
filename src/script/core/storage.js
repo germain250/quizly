@@ -3,21 +3,21 @@ const STORAGE_KEYS = {
     SESSION: "quizly_current_user"
 };
 
-export async function getUsers(){
+export function getUsers(){
     return JSON.parse(localStorage.getItem(STORAGE_KEYS.USERS)) || {};
 }
 
-export async function saveUsers(users){
+export function saveUsers(users){
     localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(users));
 }
 
-export async function getCurrentUserId(){
-    localStorage.getItem(STORAGE_KEYS.SESSION)
+export function getCurrentUserId(){
+    return localStorage.getItem(STORAGE_KEYS.SESSION)
 }
-export async function setCurrentUserId(userId){
+export function setCurrentUserId(userId){
     localStorage.setItem(STORAGE_KEYS.SESSION, userId)
 }
 
-export async function clearSession(){
+export function clearSession(){
     localStorage.removeItem(STORAGE_KEYS.SESSION);
 }

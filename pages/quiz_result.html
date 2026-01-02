@@ -4,151 +4,120 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Results – Quizly</title>
-
-    <!-- Your existing style.css with Tailwind, variables, Comfortaa font -->
     <link rel="stylesheet" href="../src/style.css">
-    <script src="../src/script/quiz-result.js" defer></script>
-
-    <!-- Boxicons for icons -->
+    <script type="module" src="../src/script/quiz-result.js" defer></script>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 </head>
 <body class="bg-bg-dark text-text-dark min-h-screen">
 
-    <div class="max-w-5xl mx-auto px-4 py-8 md:py-12">
+    <div class="max-w-6xl mx-auto px-4 py-8 md:py-12">
 
-    <!-- HEADER -->
     <header class="flex items-center justify-between mb-6">
-
-      <!-- Logo -->
-      <div class="flex items-center gap-4">
-        <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-bg-dark text-2xl font-bold shadow-lg shadow-primary/40">
-          Q
+      <a href="../index.html">
+        <div class="flex items-center gap-4">
+          <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-surface text-2xl font-bold shadow-lg shadow-primary/30">
+            Q
+          </div>
+          <h1 class="text-3xl font-extrabold tracking-tight text-primary drop-shadow-lg">
+            Quizly
+          </h1>
         </div>
-        <h1 class="text-3xl font-extrabold tracking-tight text-primary drop-shadow-lg">
-          Quizly
-        </h1>
-      </div>
+      </a>
 
-      <!-- Profile -->
       <div class="relative">
-        <button id="profileBtn"
-          class="w-12 h-12 rounded-full ring ring-primary ring-offset-4 ring-offset-bg-dark overflow-hidden">
-          <img src="https://i.pravatar.cc/150?img=68" class="w-full h-full object-cover" />
+        <button id="profileBtn" class="w-12 h-12 rounded-full ring ring-primary ring-offset-4 ring-offset-bg-dark overflow-hidden">
+          G
         </button>
 
-        <!-- Profile Dropdown -->
-        <div id="profileMenu"
-          class="absolute z-50 right-0 mt-4 w-48 bg-surface-dark border border-primary/20 rounded-2xl shadow-xl hidden">
+        <div id="authButtons" class="flex space-x-2">
+            <button onclick="{ window.location.href = './login.html' }" class="btn bg-primary text-bg-dark hover:bg-primary/90 border-primary px-10 py-4 text-lg font-semibold shadow-lg shadow-primary/30 flex items-center gap-3">Login</button>
+        </div>
+
+        <div id="profileMenu" class="absolute z-50 right-0 mt-4 w-48 bg-surface-dark border border-primary/20 rounded-2xl shadow-xl hidden">
           <ul class="py-2 text-sm">
-            <li>
-              <a href="./dashboard.html" class="block px-4 py-2 hover:bg-primary/20">
-                Dashboard
-              </a>
-            </li>
-            <li>
-              <button id="openSettings"
-                class="w-full text-left px-4 py-2 hover:bg-primary/20">
-                Quiz Settings
-              </button>
-            </li>
+            <li><a href="./dashboard.html" class="block px-4 py-2 hover:bg-primary/20">Dashboard</a></li>
+            <li><button id="openSettings" class="w-full text-left px-4 py-2 hover:bg-primary/20">Learn</button></li>
             <li class="border-t border-primary/20 my-2"></li>
-            <li>
-              <button class="w-full text-left px-4 py-2 text-red-400 hover:bg-red-500/20">
-                Logout
-              </button>
-            </li>
+            <li><button class="w-full text-left px-4 py-2 text-red-400 hover:bg-red-500/20">Logout</button></li>
           </ul>
         </div>
       </div>
     </header>
 
-        <!-- Main Results Content -->
-        <main class="space-y-12">
+    <main class="space-y-12">
 
-            <!-- Top Celebration Section -->
-            <section class="text-center">
-                <h2 id="congrats" class="text-4xl md:text-5xl font-bold mb-6">Great Job!</h2>
+        <section class="text-center">
+            <h2 id="congrats" class="text-4xl md:text-5xl font-bold mb-6">Great Job!</h2>
 
-                <!-- Large Circular Progress Ring -->
-                <div class="relative inline-flex flex-col items-center justify-center mb-8">
-                    <svg class="w-64 h-64 md:w-80 md:h-80 -rotate-90">
-                        <circle cx="50%" cy="50%" r="38%" stroke="rgba(250,204,21,0.2)" stroke-width="12" fill="none" />
-                        <circle 
-                            cx="50%" cy="50%" r="38%" 
-                            stroke="#facc15" 
-                            stroke-width="14" 
-                            fill="none"
-                            stroke-dasharray="502.4"
-                            stroke-dashoffset="100.48"
-                            class="transition-all duration-1000 ease-out"
-                        />
-                    </svg>
-                    <div class="absolute flex flex-col items-center">
-                        <span class="text-6xl md:text-7xl font-bold text-primary"><span id="percent">80</span>%</span>
-                        <span class="text-xl md:text-2xl opacity-80 mt-2">Score</span>
-                    </div>
+            <div class="relative inline-flex items-center justify-center mb-8 w-64 h-64 md:w-80 md:h-80">
+                <div class="absolute inset-0 rounded-full bg-surface-dark/60 border-4 border-primary/30"></div>
+                
+                <div id="scoreRing"
+                     class="absolute inset-0 rounded-full transition-all duration-1500 ease-out scale-95 opacity-90 animate-pulse-once"
+                     style="--progress: 0; --color: #22c55e;"
+                ></div>
+
+                <div class="absolute inset-[14%] rounded-full bg-bg-dark z-10"></div>
+
+                <div class="relative z-20 flex flex-col items-center">
+                    <span class="text-6xl md:text-7xl font-bold text-primary"><span id="percent">80</span>%</span>
+                    <span class="text-xl md:text-2xl opacity-80 mt-2">Score</span>
                 </div>
+            </div>
 
-                <p class="text-xl md:text-2xl opacity-90 max-w-2xl mx-auto">
-                    You scored <strong class="text-primary"><span id="correct-numm">12</span> out of <span id="total-numm">15</span></strong> correct answers in <span id="categoryName">JavaScript Fundamentals.</span>
-                </p>
+            <p class="text-xl md:text-2xl opacity-90 max-w-2xl mx-auto">
+                You scored <strong class="text-primary"><span id="correct-numm">12</span> out of <span id="total-numm">15</span></strong> correct answers in <span id="categoryName">JavaScript Fundamentals.</span>
+            </p>
 
-                <p class="mt-6 text-sm opacity-70 bg-surface-dark/40 inline-block px-6 py-3 rounded-full border border-primary/20">
-                    <i class='bx bx-check-circle text-primary mr-2'></i>
-                    This attempt has been saved to your progress
-                </p>
-            </section>
+            <p class="mt-6 text-sm opacity-70 bg-surface-dark/40 inline-block px-6 py-3 rounded-full border border-primary/20">
+                <i class='bx bx-check-circle text-primary mr-2'></i>
+                This attempt has been saved to your progress
+            </p>
+        </section>
 
-            <!-- Stats Grid -->
-            <section id="stats-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
-                <div class="bg-surface-dark/50 backdrop-blur border border-primary/20 rounded-2xl p-6 text-center">
-                    <i class='bx bx-check text-3xl text-success mb-3'></i>
-                    <p id="correct-num" class="text-3xl font-bold text-success">12</p>
-                    <p class="text-sm opacity-80">Correct</p>
-                </div>
+        <section id="stats-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+            <div class="bg-surface-dark/50 backdrop-blur border border-primary/20 rounded-2xl p-6 text-center">
+                <i class='bx bx-check text-3xl text-success mb-3'></i>
+                <p id="correct-num" class="text-3xl font-bold text-success">12</p>
+                <p class="text-sm opacity-80">Correct</p>
+            </div>
 
-                <div class="bg-surface-dark/50 backdrop-blur border border-primary/20 rounded-2xl p-6 text-center">
-                    <i class='bx bx-x text-3xl text-error mb-3'></i>
-                    <p id="incorrect-num" class="text-3xl font-bold text-error">2</p>
-                    <p class="text-sm opacity-80">Incorrect</p>
-                </div>
+            <div class="bg-surface-dark/50 backdrop-blur border border-primary/20 rounded-2xl p-6 text-center">
+                <i class='bx bx-x text-3xl text-error mb-3'></i>
+                <p id="incorrect-num" class="text-3xl font-bold text-error">2</p>
+                <p class="text-sm opacity-80">Incorrect</p>
+            </div>
 
-                <div class="bg-surface-dark/50 backdrop-blur border border-primary/20 rounded-2xl p-6 text-center">
-                    <i class='bx bx-minus text-3xl text-warning mb-3'></i>
-                    <p id="skipped-num" class="text-3xl font-bold text-warning">1</p>
-                    <p class="text-sm opacity-80">Skipped</p>
-                </div>
+            <div class="bg-surface-dark/50 backdrop-blur border border-primary/20 rounded-2xl p-6 text-center">
+                <i class='bx bx-minus text-3xl text-warning mb-3'></i>
+                <p id="skipped-num" class="text-3xl font-bold text-warning">1</p>
+                <p class="text-sm opacity-80">Skipped</p>
+            </div>
 
-                <div class="bg-surface-dark/50 backdrop-blur border border-primary/20 rounded-2xl p-6 text-center">
-                    <i class='bx bx-list-ul text-3xl text-primary mb-3'></i>
-                    <p id="total-num" class="text-3xl font-bold">15</p>
-                    <p class="text-sm opacity-80">Total Questions</p>
-                </div>
+            <div class="bg-surface-dark/50 backdrop-blur border border-primary/20 rounded-2xl p-6 text-center">
+                <i class='bx bx-list-ul text-3xl text-primary mb-3'></i>
+                <p id="total-num" class="text-3xl font-bold">15</p>
+                <p class="text-sm opacity-80">Total Questions</p>
+            </div>
 
-                <div class="bg-surface-dark/50 backdrop-blur border border-primary/20 rounded-2xl p-6 text-center">
-                    <i class='bx bx-time text-3xl text-primary mb-3'></i>
-                    <p id="time-taken" class="text-3xl font-bold">12:45</p>
-                    <p class="text-sm opacity-80">Time Taken</p>
-                </div>
+            <div class="bg-surface-dark/50 backdrop-blur border border-primary/20 rounded-2xl p-6 text-center">
+                <i class='bx bx-time text-3xl text-primary mb-3'></i>
+                <p id="time-taken" class="text-3xl font-bold">12:45</p>
+                <p class="text-sm opacity-80">Time Taken</p>
+            </div>
 
-                <div class="bg-surface-dark/50 backdrop-blur border border-primary/20 rounded-2xl p-6 text-center">
-                    <i class='bx bx-timer text-3xl text-primary mb-3'></i>
-                    <p id="time-limit" class="text-3xl font-bold">15:00</p>
-                    <p class="text-sm opacity-80">Time Limit</p>
-                </div>
-            </section>
+            <div class="bg-surface-dark/50 backdrop-blur border border-primary/20 rounded-2xl p-6 text-center">
+                <i class='bx bx-timer text-3xl text-primary mb-3'></i>
+                <p id="time-limit" class="text-3xl font-bold">15:00</p>
+                <p class="text-sm opacity-80">Time Limit</p>
+            </div>
+        </section>
 
-                        <!-- ================= REVIEW / CORRECTIONS SECTION ================= -->
-            <section class="bg-surface-dark/60 backdrop-blur-lg border border-primary/20 rounded-3xl pt-8 md:p-10 mt-16">
+        <section class="bg-surface-dark/60 backdrop-blur-lg border border-primary/20 rounded-3xl pt-8 md:p-10 mt-16">
+            <h3 class="text-3xl font-bold mb-8 text-center">Review Your Answers</h3>
 
-            <h3 class="text-3xl font-bold mb-8 text-center">
-                Review Your Answers
-            </h3>
-
-            <!-- Review Card (Quiz-like) -->
             <div class="bg-bg-dark/40 border border-primary/20 rounded-3xl p-8 md:p-10">
-
-                <!-- Review Meta -->
                 <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
                 <div>
                     <h4 class="text-xl md:text-2xl font-semibold">
@@ -159,132 +128,57 @@
                     </p>
                 </div>
 
-                <!-- Status Badge -->
-                <span
-                    id="reviewStatus"
-                    class="inline-block px-6 py-2 rounded-full text-sm font-semibold
-                        bg-success/20 text-success border border-success/40">
+                <span id="reviewStatus" class="inline-block px-6 py-2 rounded-full text-sm font-semibold bg-success/20 text-success border border-success/40">
                     Correct
                 </span>
                 </div>
 
-                <!-- Question Text -->
-                <h5 id="reviewQuestionText"
-                    class="text-xl md:text-2xl font-semibold leading-relaxed mb-10">
+                <h5 id="reviewQuestionText" class="text-xl md:text-2xl font-semibold leading-relaxed mb-10">
                 Which of the following is NOT a valid way to declare a variable in modern JavaScript?
                 </h5>
 
-                <!-- Options -->
-                <div id="reviewOptions"
-                    class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
-
-                <!-- Correct Answer -->
-                <div
-                    class="flex items-center p-6 rounded-2xl border-2
-                        border-success bg-success/10">
-                    <i class='bx bx-check-circle text-success text-2xl mr-4'></i>
-                    <span class="text-lg font-medium">
-                    const
-                    <span class="block text-sm opacity-70 mt-1">
-                        Correct answer
-                    </span>
-                    </span>
+                <div id="reviewOptions" class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12"></div>
+                <div class="space-y-4" id="description"></div>
+                <div class="flex flex-col sm:flex-row justify-between space-y-4 gap-6">
+                <button id="reviewPrevBtn" class="btn btn-outline border border-primary/50 text-primary px-8 py-3 text-lg">Previous</button>
+                <button id="reviewNextBtn" class="btn bg-primary text-bg-dark hover:bg-primary/90 px-10 py-3 text-lg font-semibold shadow-lg shadow-primary/30">Next</button>
                 </div>
-
-                <!-- User Wrong Answer Example -->
-                <div
-                    class="flex items-center p-6 rounded-2xl border-2
-                        border-error bg-error/10">
-                    <i class='bx bx-x-circle text-error text-2xl mr-4'></i>
-                    <span class="text-lg font-medium">
-                    dim
-                    <span class="block text-sm opacity-70 mt-1">
-                        Your answer
-                    </span>
-                    </span>
-                </div>
-
-                <!-- Neutral Option -->
-                <div
-                    class="flex items-center p-6 rounded-2xl border-2
-                        border-primary/20 opacity-60">
-                    <span class="text-lg font-medium">
-                    let
-                    </span>
-                </div>
-
-                <div
-                    class="flex items-center p-6 rounded-2xl border-2
-                        border-primary/20 opacity-60">
-                    <span class="text-lg font-medium">
-                    var
-                    </span>
-                </div>
-
-                </div>
-
-                <!-- Review Navigation -->
-                <div class="flex flex-col sm:flex-row justify-between gap-6">
-
-                <button
-                    id="reviewPrevBtn"
-                    class="btn btn-outline border-primary/50 text-primary px-8 py-3 text-lg">
-                    Previous
-                </button>
-
-                <button
-                    id="reviewNextBtn"
-                    class="btn bg-primary text-bg-dark hover:bg-primary/90 px-10 py-3 text-lg font-semibold shadow-lg shadow-primary/30">
-                    Next
-                </button>
-
-                </div>
-
             </div>
-            </section>
-            <!-- ================= END REVIEW SECTION ================= -->
+        </section>
 
-
-            <!-- Accuracy Breakdown (Optional Insight) -->
-            <section class="bg-surface-dark/60 backdrop-blur-lg border border-primary/20 rounded-3xl p-8 md:p-10">
-                <h3 class="text-2xl font-bold mb-6 text-center">Performance Breakdown</h3>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div class="text-center">
-                        <div class="text-4xl font-bold text-success mb-2">100%</div>
-                        <p class="text-lg opacity-90">Easy Questions</p>
-                        <p class="text-sm opacity-70">5 / 5 correct</p>
-                    </div>
-                    <div class="text-center">
-                        <div class="text-4xl font-bold text-primary mb-2">80%</div>
-                        <p class="text-lg opacity-90">Medium Questions</p>
-                        <p class="text-sm opacity-70">6 / 8 correct</p>
-                    </div>
-                    <div class="text-center">
-                        <div class="text-4xl font-bold text-warning mb-2">50%</div>
-                        <p class="text-lg opacity-90">Hard Questions</p>
-                        <p class="text-sm opacity-70">1 / 2 correct</p>
-                    </div>
+        <section id="performance" class="bg-surface-dark/60 backdrop-blur-lg border border-primary/20 rounded-3xl p-8 md:p-10">
+            <h3 class="text-2xl font-bold mb-6 text-center">Performance Breakdown</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="text-center">
+                    <div id="easy-percent" class="text-4xl font-bold text-success mb-2">100%</div>
+                    <p class="text-lg opacity-90">Easy Questions</p>
+                    <p id="easy-correct" class="text-sm opacity-70">5 / 5 correct</p>
                 </div>
-            </section>
+                <div class="text-center">
+                    <div id="medium-percent" class="text-4xl font-bold text-primary mb-2">20%</div>
+                    <p class="text-lg opacity-90">Medium Questions</p>
+                    <p id="medium-correct" class="text-sm opacity-70">6 / 8 correct</p>
+                </div>
+                <div class="text-center">
+                    <div id="hard-percent" class="text-4xl font-bold text-warning mb-2">50%</div>
+                    <p class="text-lg opacity-90">Hard Questions</p>
+                    <p id="hard-correct" class="text-sm opacity-70">1 / 2 correct</p>
+                </div>
+            </div>
+        </section>
 
-            <!-- Action Buttons -->
-            <section class="flex flex-col sm:flex-row gap-6 justify-center items-center">
-                <button class="btn bg-primary text-bg-dark hover:bg-primary/90 border-primary px-10 py-4 text-lg font-semibold shadow-lg shadow-primary/30 flex items-center gap-3">
-                    <i class='bx bx-refresh text-2xl'></i>
-                    Retry This Quiz
-                </button>
-
-                <button class="btn btn-outline border-primary/60 text-primary hover:bg-primary hover:text-bg-dark px-10 py-4 text-lg font-semibold flex items-center gap-3">
-                    <i class='bx bx-play-circle text-2xl'></i>
-                    Start New Quiz
-                </button>
-
-                <button class="btn btn-ghost text-primary hover:bg-primary/20 px-8 py-4 text-lg flex items-center gap-3">
-                    <i class='bx bx-home text-2xl'></i>
-                    Go to Dashboard
-                </button>
-            </section>
-        </main>
+        <section class="flex flex-col sm:flex-row gap-6 justify-center items-center">
+            <button id="retryQuiz" class="btn bg-primary text-bg-dark hover:bg-primary/90 border-primary px-10 py-4 text-lg font-semibold shadow-lg shadow-primary/30 flex items-center gap-3">
+                <i class='bx bx-refresh text-2xl'></i> Retry This Quiz
+            </button>
+            <button onclick="{ window.location.href = './quiz.html' }" class="btn btn-outline border-primary/60 text-primary hover:bg-primary hover:text-bg-dark px-10 py-4 text-lg font-semibold flex items-center gap-3">
+                <i class='bx bx-play-circle text-2xl'></i> Start New Quiz
+            </button>
+            <button onclick="{ window.location.href = './dashboard.html' }" class="btn btn-ghost text-primary hover:bg-primary/20 px-8 py-4 text-lg flex items-center gap-3">
+                <i class='bx bx-home text-2xl'></i> Go to Dashboard
+            </button>
+        </section>
+    </main>
     </div>
 
 </body>
