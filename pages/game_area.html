@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -10,9 +10,9 @@
   <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
 </head>
 
-<body class="bg-bg-dark text-text-dark min-h-screen">
+<body class="bg-gray-50 dark:bg-bg-dark text-text dark:text-text-dark min-h-screen transition-colors duration-300">
 
-  <div class="max-w-7xl mx-auto px-4 py-6 h-screen flex flex-col">
+  <div class="max-w-6xl mx-auto px-6 md:px-8 py-6 h-screen flex flex-col">
 
     <header class="flex items-center justify-between mb-6">
       <a href="../index.html">
@@ -25,8 +25,14 @@
           </h1>
         </div>
       </a>
-      <div class="text-sm opacity-80">
-        Room: <span id="roomCodeDisplay" class="text-primary font-mono">——</span>
+      <div class="flex items-center gap-3">
+        <div class="text-sm opacity-80">
+          Room: <span id="roomCodeDisplay" class="text-primary font-mono">——</span>
+        </div>
+        <button id="themeToggle" class="w-11 h-11 rounded-xl bg-primary/10 hover:bg-primary/20 flex items-center justify-center transition-all">
+          <i class="bx bx-moon text-xl text-primary dark:hidden"></i>
+          <i class="bx bx-sun text-xl text-primary hidden dark:inline"></i>
+        </button>
       </div>
     </header>
 
@@ -36,7 +42,7 @@
 
         <!-- Timer + Reactions -->
         <div class="flex justify-between items-center gap-4 flex-wrap">
-          <div class="flex items-center gap-3 bg-surface-dark/40 px-6 py-3 rounded-2xl border border-primary/20">
+          <div class="flex items-center gap-3 bg-white dark:bg-surface-dark/40 px-6 py-3 rounded-2xl border border-gray-200 dark:border-primary/20">
             <i class="bx bx-time text-2xl text-primary"></i>
             <strong class="text-primary text-xl" id="timeRemaining">--:--</strong>
           </div>
@@ -50,7 +56,7 @@
         </div>
 
         <!-- Question card -->
-        <section class="bg-surface-dark/60 backdrop-blur-lg border border-primary/20 rounded-3xl p-6 shadow-2xl flex flex-col flex-1">
+        <section class="bg-white dark:bg-surface-dark/60 border border-gray-200 dark:border-primary/20 rounded-3xl p-6 shadow-sm dark:shadow-2xl flex flex-col flex-1">
           <div class="flex items-center justify-between mb-4 flex-wrap gap-4">
             <div>
               <h2 class="text-2xl font-bold" id="quizTitle">Loading question...</h2>
@@ -84,7 +90,7 @@
         </section>
 
         <!-- Leaderboard -->
-        <section class="bg-surface-dark/60 backdrop-blur-lg border border-primary/20 rounded-3xl p-6 shadow-xl">
+        <section class="bg-white dark:bg-surface-dark/60 border border-gray-200 dark:border-primary/20 rounded-3xl p-6 shadow-sm dark:shadow-xl">
           <h3 class="text-xl font-bold mb-4 text-center flex items-center justify-center gap-2">
             <i class='bx bx-trophy text-warning'></i> Live Leaderboard
           </h3>
@@ -94,15 +100,15 @@
       </div>
 
       <!-- Chat sidebar -->
-      <aside class="hidden lg:flex w-full lg:w-80 flex-col bg-surface-dark/70 backdrop-blur-lg border border-primary/20 rounded-3xl overflow-hidden shadow-2xl">
-        <div class="p-4 border-b border-primary/20">
-          <h3 class="text-lg font-semibold">Live Chat</h3>
+      <aside class="hidden lg:flex w-full lg:w-80 flex-col bg-white dark:bg-surface-dark/70 border border-gray-200 dark:border-primary/20 rounded-3xl overflow-hidden shadow-sm dark:shadow-2xl">
+        <div class="p-4 border-b border-gray-200 dark:border-primary/20">
+          <h3 class="text-lg font-semibold text-text dark:text-text-dark">Live Chat</h3>
         </div>
         <div id="chatMessages" class="flex-1 p-4 overflow-y-auto space-y-3"></div>
-        <div class="p-3 border-t border-primary/20">
+        <div class="p-3 border-t border-gray-200 dark:border-primary/20">
           <div class="flex">
-            <input id="chatInput" type="text" placeholder="Type to chat..." class="flex-1 px-4 py-2 bg-bg-dark rounded-l-xl border border-primary/30 focus:outline-none text-sm">
-            <button id="sendChatBtn" class="btn bg-primary px-5 rounded-r-xl text-sm">Send</button>
+            <input id="chatInput" type="text" placeholder="Type to chat..." class="flex-1 px-4 py-2 bg-gray-50 dark:bg-bg-dark rounded-l-xl border border-gray-300 dark:border-primary/30 focus:outline-none text-sm text-text dark:text-text-dark placeholder-gray-400">
+            <button id="sendChatBtn" class="btn bg-primary text-bg-dark px-5 rounded-r-xl text-sm font-semibold">Send</button>
           </div>
         </div>
       </aside>
@@ -124,6 +130,28 @@
 
     let currentQuestion = null;
     let selectedOption = null;
+
+    // Theme toggle
+    const themeToggle = document.getElementById('themeToggle');
+    const html = document.documentElement;
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+
+    if (savedTheme === 'light') {
+      html.classList.remove('dark');
+    } else {
+      html.classList.add('dark');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      const isDark = html.classList.contains('dark');
+      if (isDark) {
+        html.classList.remove('dark');
+        localStorage.setItem('theme', 'light');
+      } else {
+        html.classList.add('dark');
+        localStorage.setItem('theme', 'dark');
+      }
+    });
 
     // Rejoin / sync state
     socket.emit('rejoinGame', { roomCode });
@@ -193,7 +221,7 @@
       container.innerHTML = '';
       scores.sort((a, b) => b.score - a.score).forEach((p, i) => {
         const div = document.createElement('div');
-        div.className = 'flex items-center justify-between p-3 bg-bg-dark/40 rounded-2xl border border-primary/20';
+        div.className = 'flex items-center justify-between p-3 bg-gray-50 dark:bg-bg-dark/40 rounded-2xl border border-gray-200 dark:border-primary/20';
         div.innerHTML = `
           <div class="flex items-center gap-3">
             <span class="text-lg font-bold text-warning w-8">${i + 1}</span>
